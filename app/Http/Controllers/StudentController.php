@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Student;
+use Illuminate\Validation\Rule;
 class StudentController extends Controller
 {
     /**
@@ -11,7 +12,10 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json([
+            'success'=>true,
+            'data'=>Student::all(),
+        ]);
     }
 
     /**
@@ -19,7 +23,20 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'student_id' => 'required|string|unique:students,student_id',
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|email|unique:students,email',
+            'course'     => 'required|string|max:255',
+            'age'        => 'required|integer|min:1',
+        ]);
+        $student=Student::create($validated);
+        
+        return response()->json([
+            'success'=>true,
+            'message'=>'Student created successfully',
+            'data'=>$student,
+        ],201);
     }
 
     /**
