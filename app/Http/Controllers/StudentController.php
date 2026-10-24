@@ -42,24 +42,52 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Student $student)
     {
-        //
+        return response()->json([
+            'success'=>true,
+            'data'=>$student,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Student $student)
     {
-        //
+        $validated=$request->validate([
+        'student_id'=>[
+            'required',
+            'string',
+            Rule::unique('students','student_id')->ignore($student->id)],
+        'name'=>'required|string|max:254',
+        'email'=>[
+            'required',
+            'email',
+            Rule::unique('students','email')->ignore($student->id)],
+        'course'=>'required|string|max:255',
+        'age'=>'required|integer|min:1',
+
+        ]);
+        $student->update($validated);
+        return response()->json([
+            'success'=>true,
+            'data'=>$student,
+            'message'=>'success student update!',
+
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Student $student)
     {
-        //
+        $student->delete();
+        return response()->json([
+            'success'=>true,
+            'message'=>'student successfully delete',
+            
+        ]);
     }
 }
