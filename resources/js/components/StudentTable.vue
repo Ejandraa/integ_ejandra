@@ -13,8 +13,12 @@ defineEmits(['edit', 'delete']);
     <table v-else>
         <thead>
             <tr>
-                <th>Student ID</th><th>Name</th><th>Email</th>
-                <th>Course</th><th>Age</th><th>Actions</th>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Age</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
